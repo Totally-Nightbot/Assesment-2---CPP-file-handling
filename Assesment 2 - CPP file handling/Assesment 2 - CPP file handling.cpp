@@ -1,20 +1,54 @@
-// Assesment 2 - CPP file handling.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+
 
 #include <iostream>
+#include <string>
+
+using namespace std;
+
+
+class Highscore
+{
+private: 
+	int score;
+	char name[6];
+	int DoA[3]; 
+
+public:
+
+	friend ostream& operator << (ostream& os, Highscore &score);
+	friend istream& operator >> (istream& is, Highscore &score);
+	
+	
+};
+ostream& operator << (ostream& os, Highscore &score) // overides the << operator to output the players input
+{
+	os << "\n" << "name: " << score.name << "\n" << "score: " << score.score << "\n" << "Date of attainment: " << score.DoA[0] << "/" << score.DoA[1] << "/" << score.DoA[2];
+	return os;
+}
+istream& operator >> (istream& is, Highscore& score) // overides the >> operator to get the input of the player
+{
+	cout << "\n Enter Name (Max 5 characters): ";
+	is >> score.name;
+	cout << "\n Enter Score: ";
+	is >> score.score;
+	cout << "\n Enter Day of attainment: ";
+	is >> score.DoA[0];
+	cout << "\n Enter Month of attainment: ";
+	is >> score.DoA[1];
+	cout << "\n Enter Year of attainment: ";
+	is >> score.DoA[2];
+
+	return is; 
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	Highscore score;
+
+	cout << "enter new score details\n";
+	cin >> score;
+	cout << "entered score is: " << score << endl;
+	system("pause");
+	
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
