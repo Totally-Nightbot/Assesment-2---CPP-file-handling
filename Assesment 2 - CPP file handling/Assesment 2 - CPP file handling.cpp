@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include<fstream>
 
 using namespace std;
 
@@ -44,10 +45,30 @@ istream& operator >> (istream& is, Highscore& score) // overides the >> operator
 int main()
 {
 	Highscore score;
+	Highscore read;
 
-	cout << "enter new score details\n";
+	cout << "enter new score details\n"; //asks the user to input score details (runs the << overided input)
 	cin >> score;
 	cout << "entered score is: " << score << endl;
+	
+	cout << "saving score...";
+
+	fstream file; // declares the file and opens it to save the score
+	file.open("highscores.txt", ios::out);
+	
+	file << score << endl; //uses the overrided << operator, figure out how to print it properly without using that overloaded one (I'm cooked)
+	
+	cout << "score saved\n" << "file info:\n";
+	
+	while (!file.eof()) //Reads the file until reaching the end of the file
+	{
+		file >> read;
+		cout << read << endl;
+	}
+	file.close();
+
+	cout << "done\n";
+
 	system("pause");
 	
 	return 0;
