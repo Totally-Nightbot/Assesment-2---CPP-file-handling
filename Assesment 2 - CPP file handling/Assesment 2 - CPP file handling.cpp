@@ -57,13 +57,16 @@ int main()
 	file.open("highscores.txt", ios::out);
 	
 	file << score << endl; //uses the overrided << operator, figure out how to print it properly without using that overloaded one (I'm cooked)
-	
+	file.close();
 	cout << "score saved\n" << "file info:\n";
-	
-	while (!file.eof()) //Reads the file until reaching the end of the file
+
+	ifstream rfile;
+	rfile.open("highscores.txt");
+	while (!rfile.eof()) //Reads the file until reaching the end of the file
 	{
-		file >> read;
-		cout << read << endl;
+		string data;
+		rfile >> data;
+		cout << data << endl;
 	}
 	file.close();
 
