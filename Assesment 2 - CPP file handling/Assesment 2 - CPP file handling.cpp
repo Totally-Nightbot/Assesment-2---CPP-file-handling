@@ -5,75 +5,62 @@
 #include<fstream>
 
 using namespace std;
-
-
-class Highscore
-{
-private: 
-	int score;
-	char name[6];
-	int DoA[3]; 
-
-public:
-
-	friend ostream& operator << (ostream& os, Highscore &score);
-	friend istream& operator >> (istream& is, Highscore &score);
-	
-	
-};
-ostream& operator << (ostream& os, Highscore &score) // overides the << operator to output the players input
-{
-	os << "\n" << "name: " << score.name << "\n" << "score: " << score.score << "\n" << "Date of attainment: " << score.DoA[0] << "/" << score.DoA[1] << "/" << score.DoA[2];
-	return os;
-}
-istream& operator >> (istream& is, Highscore& score) // overides the >> operator to get the input of the player
-{
-	cout << "\n Enter Name (Max 5 characters): ";
-	is >> score.name;
-	cout << "\n Enter Score: ";
-	is >> score.score;
-	cout << "\n Enter Day of attainment: ";
-	is >> score.DoA[0];
-	cout << "\n Enter Month of attainment: ";
-	is >> score.DoA[1];
-	cout << "\n Enter Year of attainment: ";
-	is >> score.DoA[2];
-
-	return is; 
-}
-
 int main()
 {
-	Highscore score;
-	Highscore read;
-
-	cout << "enter new score details\n"; //asks the user to input score details (runs the << overided input)
-	cin >> score;
-	cout << "entered score is: " << score << endl;
-	
-	cout << "saving score...";
-
-	fstream file; // declares the file and opens it to save the score
-	file.open("highscores.txt", ios::out);
-	
-	file << score << endl; //uses the overrided << operator, figure out how to print it properly without using that overloaded one (I'm cooked)
-	file.close();
-	cout << "score saved\n" << "file info:\n";
-
-	ifstream rfile;
-	rfile.open("highscores.txt");
-	while (!rfile.eof()) //Reads the file until reaching the end of the file
+	struct playerscore
 	{
-		string data;
-		rfile >> data;
-		cout << data << endl;
+		char score[4];
+		char name[6];
+		int  DoA[3];
+	};
+	playerscore newplayer[1] = {};
+	for (int i = 0; i < 1; i++)
+	{
+		cout << "enter new score details\n"; //asks the user to input score details (runs the << overided input)
+		cout << "\n Enter Name (Max 5 characters): ";
+		cin >> newplayer[i].name;
+		cout << "\n Enter Score (max score 999): ";
+		cin >> newplayer[i].score;
+		cout << "\n Enter Day of attainment: ";
+		cin >> newplayer[i].DoA[0];
+		cout << "\n Enter Month of attainment: ";
+		cin >> newplayer[i].DoA[1];
+		cout << "\n Enter Year of attainment: ";
+		cin >> newplayer[i].DoA[2];
+		cout << "\n";
 	}
-	file.close();
 
-	cout << "done\n";
+	ofstream tfile("player.scores", ios::out | ios::binary);
+
+	if (tfile.good())
+	{
+		cout << "file opened\n";
+
+		tfile.write((char*)&newplayer, sizeof(playerscore));
+
+	}
+	tfile.close();
+
+	ifstream rfile("player.scores", ios::in | ios::binary);
+
+	while (!rfile.eof() && rfile.peek() != EOF)
+	{
+		rfile.read((char*)&newplayer, sizeof(playerscore));
+		cout << newplayer << endl;
+	}
+	rfile.close();
+
+
+
 
 	system("pause");
-	
-	return 0;
 
+	for (int i = 0; i < 1; i++)
+	{
+		cout << "Your entered scores are: \n" << "name: " << newplayer[i].name << "\n" << "score: " << newplayer[i].score << "\n" << "Date of attainment: " << newplayer[i].DoA[0] << "/" << newplayer[i].DoA[1] << "/" << newplayer[i].DoA[2] << "\n";
+	}
+
+	system("pause");
+	return 0;
 }
+
