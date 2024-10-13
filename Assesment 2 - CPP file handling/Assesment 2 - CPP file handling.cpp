@@ -15,7 +15,7 @@ struct playerscore // creates the playerscore structure (holds the score name an
 
 playerscore newplayer[32] = {};
 int lines;
-
+playerscore* sorting = new playerscore[lines]; // creates a dynamic array for sorting
 void bubbleSort(playerscore sorting[]) { //runs the bubble sort system (if the number that is next is smaller than the current then it moves it to the left)
 	int swaps;
 	playerscore temp;
@@ -135,6 +135,7 @@ void FindByName()
 
 int main()
 {
+	bool exit = false;
 	int choice = 0;
 	cout << "Welcome!pick a choice: \n\n";
 	cout << "1: Add player scores\n\n";
@@ -142,57 +143,60 @@ int main()
 	cout << "3: Find player by name\n\n";
 	cin >> choice;
 
-
-	switch (choice)
+	
+	while (exit = false)
 	{
-	case 0:
-		cout << "Welcome!pick a choice: \n\n";
-		cout << "1: Add player scores\n\n";
-		cout << "2: Sort and read file\n\n";
-		cout << "3: Find player by name\n\n";
-		cin >> choice;
-		break;
-
-	case 1: //add scores to the data file 
-		AddPlayerScores();
-
-		choice = 0;
-		break;
-
-	case 2: // sort and read the file
-		lines = ReadFile(); //reads out the entered players
-
-		playerscore* sorting = new playerscore[lines]; // creates a dynamic array for sorting
-		cout << "sorting...";
-
-		bubbleSort(sorting); //sorts using bubble sort
-		cout << "sorting complete!\n\n";
-
-		for (size_t i = 0; i < lines; i++) //prints the sorted array 
+		switch (choice)
 		{
+		case 0:
+			cout << "Welcome!pick a choice: \n\n";
+			cout << "1: Add player scores\n\n";
+			cout << "2: Sort and read file\n\n";
+			cout << "3: Find player by name\n\n";
+			cin >> choice;
+			break;
 
-			cout << "name: " << sorting[i].name << "\n"
-				<< "score: " << sorting[i].score << "\n"
-				<< "Date of attainment: " << sorting[i].DoA[0] << "/" << sorting[i].DoA[1] << "/" << sorting[i].DoA[2] << "\n";
-			cout << endl;
+		case 1: //add scores to the data file 
+			AddPlayerScores();
+
+			choice = 0;
+			break;
+
+		case 2: // sort and read the file
+			lines = ReadFile(); //reads out the entered players
+			cout << "sorting...";
+
+			bubbleSort(sorting); //sorts using bubble sort
+			cout << "sorting complete!\n\n";
+
+			for (size_t i = 0; i < lines; i++) //prints the sorted array 
+			{
+
+				cout << "name: " << sorting[i].name << "\n"
+					<< "score: " << sorting[i].score << "\n"
+					<< "Date of attainment: " << sorting[i].DoA[0] << "/" << sorting[i].DoA[1] << "/" << sorting[i].DoA[2] << "\n";
+				cout << endl;
+			}
+
+			choice = 0;
+			break;
+
+		case 3: //finds a player by name
+			FindByName();
+
+			choice = 0;
+			break;
+
+		case 4: //exits on entry 
+
+			system("quit");
+			break;
+
+		default:
+			cout << "error! incorrect number selected, please pick another option from the above \n\n";
+			break;
 		}
-
-		choice = 0;
-		break;
-
-	case 3: //finds a player by name
-		FindByName();
-
-		choice = 0;
-		break;
-
-	default:
-		cout << "error! incorrect number selected, please pick another option from the above \n\n";
 	}
-		
-
-
-
 	return 0;
 }
 
