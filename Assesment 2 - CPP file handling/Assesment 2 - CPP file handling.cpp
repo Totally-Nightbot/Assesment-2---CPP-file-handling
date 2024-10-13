@@ -13,8 +13,8 @@ int main()
 		char name[6];
 		int  DoA[3];
 	};
-	playerscore newplayer[1] = {};
-	for (int i = 0; i < 1; i++)
+	playerscore newplayer[3] = {};
+	for (int i = 0; i < 3; i++)
 	{
 		cout << "enter new score details\n"; //asks the user to input score details (runs the << overided input)
 		cout << "\n Enter Name (Max 5 characters): ";
@@ -36,17 +36,34 @@ int main()
 	{
 		cout << "file opened\n";
 
-		tfile.write((char*)&newplayer, sizeof(playerscore));
-
+		for (size_t i = 0; i < 3; i++)
+		{
+			tfile.write((char*)&newplayer[i].name, sizeof(char)*6);
+			tfile.write((char*)&newplayer[i].score, sizeof(char)*4);
+			tfile.write((char*)&newplayer[i].DoA[0], sizeof(newplayer[i].DoA[0]));
+			tfile.write((char*)&newplayer[i].DoA[1], sizeof(newplayer[i].DoA[1]));
+			tfile.write((char*)&newplayer[i].DoA[2], sizeof(newplayer[i].DoA[2]));
+		}
 	}
 	tfile.close();
 
-	ifstream rfile("player.scores", ios::in | ios::binary);
 
+	ifstream rfile("player.scores", ios::in | ios::binary);
+	
 	while (!rfile.eof() && rfile.peek() != EOF)
 	{
-		rfile.read((char*)&newplayer, sizeof(playerscore));
-		cout << newplayer << endl;
+		rfile.read((char*)&newplayer->name, sizeof(char) * 6);
+		cout << newplayer->name << endl;
+		rfile.read((char*)&newplayer->score, sizeof(char) * 4);
+		cout << newplayer->score << endl;
+		rfile.read((char*)&newplayer->DoA[0], sizeof(newplayer->DoA[0]));
+		cout << newplayer->DoA[0] << "/";
+		rfile.read((char*)&newplayer->DoA[0], sizeof(newplayer->DoA[1]));
+		cout << newplayer->DoA[1] << "/";
+		rfile.read((char*)&newplayer->DoA[0], sizeof(newplayer->DoA[2]));
+		cout << newplayer->DoA[2] << endl << endl;
+
+	
 	}
 	rfile.close();
 
@@ -55,7 +72,7 @@ int main()
 
 	system("pause");
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		cout << "Your entered scores are: \n" << "name: " << newplayer[i].name << "\n" << "score: " << newplayer[i].score << "\n" << "Date of attainment: " << newplayer[i].DoA[0] << "/" << newplayer[i].DoA[1] << "/" << newplayer[i].DoA[2] << "\n";
 	}
