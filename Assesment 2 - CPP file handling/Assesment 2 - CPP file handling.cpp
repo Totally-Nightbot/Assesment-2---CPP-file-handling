@@ -173,8 +173,7 @@ int main() //runs the console application to make navigation easier
 	cout << "4: exit application\n\n";
 	cin >> choice;
 
-
-	while (exit == false) //applies the choices depending on the users input
+	while (true)
 	{
 		switch (choice)
 		{
