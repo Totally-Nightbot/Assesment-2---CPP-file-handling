@@ -83,6 +83,7 @@ void AddPlayerScores()
 		cout << "\n Enter Year of attainment: ";
 		cin >> newplayer[i].DoA[2];
 		cout << "\n";
+
 	}
 
 	ofstream tfile("player.scores", ios::out | ios::binary | ios::app);
