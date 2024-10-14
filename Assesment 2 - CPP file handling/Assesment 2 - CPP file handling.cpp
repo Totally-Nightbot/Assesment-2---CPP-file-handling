@@ -12,7 +12,7 @@ struct playerscore // creates the playerscore structure (holds the score name an
 
 //decleration of variables needed
 
-playerscore newplayer[32] = {}; //creates the array for the scores to first be entered into
+playerscore newplayer[32]; //creates the array for the scores to first be entered into
 int lines;
 playerscore* sorting = new playerscore[lines]; // creates a dynamic array for sorting
 
