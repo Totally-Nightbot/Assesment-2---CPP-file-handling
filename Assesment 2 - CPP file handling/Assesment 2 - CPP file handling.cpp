@@ -227,6 +227,8 @@ int main() //runs the console application to make navigation easier
 
 		default:
 			cout << "error! incorrect number selected, please pick another option from the above \n\n";
+			system("pause");
+			choice = 0;
 			break;
 		}
 	}
