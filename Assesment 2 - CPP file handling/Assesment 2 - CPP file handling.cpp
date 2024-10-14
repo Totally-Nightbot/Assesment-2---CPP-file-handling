@@ -1,9 +1,6 @@
-
-
 #include <iostream>
-#include <string>
 #include<fstream>
-
+#include <conio.h>
 using namespace std;
 
 struct playerscore // creates the playerscore structure (holds the score name and DOA)
@@ -13,13 +10,15 @@ struct playerscore // creates the playerscore structure (holds the score name an
 	int  DoA[3];
 };
 
-playerscore newplayer[32] = {};
+//decleration of variables needed
+
+playerscore newplayer[32] = {}; //creates the array for the scores to first be entered into
 int lines;
 playerscore* sorting = new playerscore[lines]; // creates a dynamic array for sorting
-void bubbleSort(playerscore sorting[]) { //runs the bubble sort system (if the number that is next is smaller than the current then it moves it to the left)
-	int swaps;
-	playerscore temp;
 
+//functions needed for the main function to function
+void FillArray()
+{
 	ifstream sfile("player.scores", ios::in | ios::binary); //reads out the current data and adds it to the array
 	int i = 0;
 	while (!sfile.eof() && sfile.peek() != EOF)
@@ -39,6 +38,13 @@ void bubbleSort(playerscore sorting[]) { //runs the bubble sort system (if the n
 		i++;
 	}
 	sfile.close();
+}
+
+void bubbleSort(playerscore sorting[]) { //runs the bubble sort system (if the number that is next is smaller than the current then it moves it to the left)
+	int swaps;
+	playerscore temp;
+
+	FillArray();
 
 	do //conducts the bubble sorting 
 	{
@@ -79,12 +85,11 @@ void AddPlayerScores()
 		cout << "\n";
 	}
 
-	ofstream tfile("player.scores", ios::out | ios::binary);
+	ofstream tfile("player.scores", ios::out | ios::binary | ios::app);
 
 	if (tfile.good())
 	{
-		cout << "file opened\n";
-
+		cout << "saving scores...\n";
 		for (size_t i = 0; i < numOfScores; i++) // writes the entered data into the file 
 		{
 			tfile.write((char*)&newplayer[i].name, sizeof(char) * 6);
@@ -93,9 +98,12 @@ void AddPlayerScores()
 			tfile.write((char*)&newplayer[i].DoA[1], sizeof(newplayer[i].DoA[1]));
 			tfile.write((char*)&newplayer[i].DoA[2], sizeof(newplayer[i].DoA[2]));
 		}
+		cout << "\nscores saved.\n";
+
+		system("pause");
 	}
 	tfile.close();
-
+	
 
 }
 
@@ -124,16 +132,37 @@ int ReadFile()
 	return lines;
 }
 
-void FindByName()
+void FindByName() //finds a players data by name
 {
+	FillArray();
 	char playerName[6];
+	bool foundname = false;
+	lines = ReadFile();
 
 	cout << "\nEnter player name: ";
 	cin >> playerName;
 
+	for (int i = 0; i < lines; i++)
+	{
+		if ( strcmp(playerName, sorting[i].name) == 0)
+		{
+			foundname = true;
+			cout << "\nentered players data: ";
+			cout << "\nname: " << sorting[i].name << "\n"
+				<< "score: " << sorting[i].score << "\n"
+				<< "Date of attainment: " << sorting[i].DoA[0] << "/" << sorting[i].DoA[1] << "/" << sorting[i].DoA[2] << "\n";
+			cout << endl;
+		}
+	}
+	if (foundname == false)
+	{
+		cout << "\n\nError!entered name not found!!\n\n";
+	}
+	system("pause");
 }
 
-int main()
+//main function (The main console) 
+int main() //runs the console application to make navigation easier
 {
 	bool exit = false;
 	int choice = 0;
@@ -141,18 +170,21 @@ int main()
 	cout << "1: Add player scores\n\n";
 	cout << "2: Sort and read file\n\n";
 	cout << "3: Find player by name\n\n";
+	cout << "4: exit application\n\n";
 	cin >> choice;
 
-	
-	while (exit = false)
+
+	while (exit == false) //applies the choices depending on the users input
 	{
 		switch (choice)
 		{
 		case 0:
+			system("cls");
 			cout << "Welcome!pick a choice: \n\n";
 			cout << "1: Add player scores\n\n";
 			cout << "2: Sort and read file\n\n";
 			cout << "3: Find player by name\n\n";
+			cout << "4: exit application\n\n";
 			cin >> choice;
 			break;
 
@@ -178,6 +210,7 @@ int main()
 				cout << endl;
 			}
 
+			system("pause");
 			choice = 0;
 			break;
 
@@ -189,7 +222,7 @@ int main()
 
 		case 4: //exits on entry 
 
-			system("quit");
+			return 0;
 			break;
 
 		default:
@@ -199,6 +232,5 @@ int main()
 	}
 	return 0;
 }
-
 
 
